@@ -1,0 +1,25 @@
+FROM node
+
+RUN mkdir project
+
+COPY . project/
+
+WORKDIR project/
+
+RUN apt update -y
+
+RUN npm install
+
+RUN npm run build
+
+RUN apt install apache2 -y
+
+RUN cp -rf dist/* /var/www/html/
+
+EXPOSE 80
+
+CMD ["apachectl", "-D", "FOREGROUND"]
+
+
+
+

@@ -1,22 +1,26 @@
 version: "3.8"
-services: 
+
+services:
+
   backend:
-    build:
-      context: ./backend
-      dockerfile: dockerfile
+    build: ./backend
+    container_name: backend
     ports:
-      - 8080:8080
- #   depends_on:
-  #     -db
+      - "8080:8080"
+    environment:
+      DB_URL: "jdbc:mariadb://database-1.cn668u8ao39o.eu-north-1.rds.amazonaws.com:3306/student_db?useSSL=true&requireSSL=true&trustServerCertificate=true&serverTimezone=UTC"
+      DB_USER: "admin"
+      DB_PASSWORD: "admin123"
+    restart: always
 
   frontend:
-    build: 
-      context: ./frontend 
-      dockerfile: dockerfile
+    build: ./frontend
+    container_name: frontend
     ports:
-      - 80:80 
+      - "80:80"
+    environment:
+      VITE_API_URL: "http://16.171.11.174:8080/api"
     depends_on:
-       - backend
+      - backend
+    restart: always
 
-#volumes:
- #  mariadb_db:       
